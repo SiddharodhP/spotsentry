@@ -42,17 +42,18 @@ as finished, even a partial one. Name experiments with `--only` instead.
 | Killed with no notice: resumes from the last periodic checkpoint | Lifecycle test, both backends | 2026-11-06 |
 | PyTorch resume is exact: same final weights after 1, 2 and 3 interruptions as without | Full E3 on CIFAR-10, 5 seeds, interruption count checked per trial | 2026-11-07 |
 | Metadata mock flags and its port 1338 | `spot --help` on AEMM v1.13.0 | 2026-11-06 |
-| CloudFormation template | `cfn-lint` only. **Never deployed** | 2026-11-06 |
+| CloudFormation template | `cfn-lint`, then deployed to ap-southeast-2 and updated in place | 2026-11-07 |
 | Spot Advisor data format; on-demand prices | Downloaded from AWS's public files | 2026-11-05/06 |
 | Live dashboard | Viewed in a browser against running jobs | 2026-11-06 |
 | Dashboard experiments section | Viewed in a browser with all six plots | 2026-11-07 |
+| Full CIFAR-10 run on a real spot instance, S3 checkpoints, lease, scale to zero on completion | `deploy.py` to Sydney, t3.small spot: 20 epochs, 80.7% test accuracy, 55 checkpoints of 7.5 MB, 0.13-0.2 s upload, under 2 ms blocking | 2026-11-07 |
+| Recovery after an instance is killed with no notice | Terminated through the Auto Scaling group at epoch 18. Replacement took the lease and restored the full checkpoint at epoch 18 step 361, 88 s after the kill (boot included). Under 50 steps lost | 2026-11-07 |
 
 ## Not verified
 
-- **Anything on real AWS.** No stack has been deployed and no real interruption has been received.
-  The IMDS behaviour comes from AWS's own mock, not from real instances.
-- **Real S3.** Conditional writes for the lease were tested on MinIO and `moto`. Real S3 supports
-  them too, but that has not been run here.
+- **A real two-minute spot notice on AWS.** It needs AWS FIS, which the Free plan denies. The real
+  run covered deploy, S3 checkpoints, the lease, a kill with no notice, and completion. The notice
+  and rebalance paths still rest on AWS's metadata mock.
 - **`spotsentry plan` online**, which needs AWS credentials. Offline mode works.
 - **E4 on a second machine**, and **E1 on CIFAR-10**. See `docs/RESULTS.md` for what did run.
 - **`relative_speed.yaml` holds placeholder numbers**, until measured on real instance types.

@@ -1,8 +1,8 @@
 # Running on real AWS
 
 This creates resources that cost money. Nothing is created until you pass `--yes`. Expect a few
-cents per hour while one instance runs. The CloudFormation template has been linted, but **it has not
-been deployed yet**, so treat the first deploy as a test and watch it.
+cents per hour while one instance runs. The template was first deployed on 2026-11-07, to Sydney on the
+Free plan, and ran a full CIFAR-10 job (see `docs/NOTES.md`).
 
 ## Before you start
 
