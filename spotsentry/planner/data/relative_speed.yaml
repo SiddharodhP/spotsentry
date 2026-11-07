@@ -9,3 +9,6 @@ relative_speed:
   m5.large: 1.0
   c6i.large: 1.0
   t3.medium: 1.0
+  c7i-flex.large: 1.0
+  m7i-flex.large: 1.0
+  t3.small: 1.0

@@ -19,3 +19,7 @@ prices:
     m5.large: 0.120
     c6i.large: 0.111
     t3.medium: 0.0528
+    # Free Tier eligible types, the only ones the Free plan can launch. Same source and date.
+    c7i-flex.large: 0.1107
+    m7i-flex.large: 0.1197
+    t3.small: 0.0264

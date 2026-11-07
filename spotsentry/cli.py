@@ -108,7 +108,7 @@ def build_parser() -> argparse.ArgumentParser:
 
     plan = sub.add_parser("plan", help="recommend where to run a job and how often to checkpoint")
     plan.add_argument("--job", required=True)
-    plan.add_argument("--candidates", default="c5.large,m5.large,c6i.large",
+    plan.add_argument("--candidates", default="c7i-flex.large,m7i-flex.large,t3.small",
                       help="comma-separated instance types")
     plan.add_argument("--regions", default="ap-southeast-2", help="comma-separated regions")
     plan.add_argument("--warmup-steps", type=int, default=10)

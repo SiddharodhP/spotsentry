@@ -22,6 +22,9 @@ fi
 
 cd "$APP"
 set +e
+# CIFAR-10 from the job's bucket: seconds, against 30 minutes from its home server.
+.venv/bin/python infra/dataset_cache.py fetch
+.venv/bin/python infra/dataset_cache.py seed --wait &
 .venv/bin/spotsentry run --job "$SPOTSENTRY_JOB_CONFIG"
 code=$?
 echo "spotsentry exited with code $code"

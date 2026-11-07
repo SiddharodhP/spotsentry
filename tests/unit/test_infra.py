@@ -119,3 +119,33 @@ def test_aws_job_config_is_valid():
     config = load_config(ROOT / "jobs" / "cifar_aws.yaml", environ={})
     assert config.store.endpoint_url is None
     assert config.metadata.base_url == "http://169.254.169.254"
+
+
+def test_dataset_cache_round_trip(tmp_path, monkeypatch):
+    import boto3
+    from moto import mock_aws
+
+    from infra import dataset_cache
+
+    monkeypatch.setattr(dataset_cache, "SIZE_BYTES", 5)
+    for name in ("AWS_ACCESS_KEY_ID", "AWS_SECRET_ACCESS_KEY"):
+        monkeypatch.setenv(name, "testing")
+    with mock_aws():
+        s3 = boto3.client("s3", region_name="ap-southeast-2")
+        s3.create_bucket(
+            Bucket="cache-test", CreateBucketConfiguration={"LocationConstraint": "ap-southeast-2"}
+        )
+        fresh = tmp_path / "fresh" / dataset_cache.FILE
+        dataset_cache.fetch(s3, "cache-test", fresh)  # nothing in the bucket yet: no file, no error
+        assert not fresh.exists()
+        seeded = tmp_path / "seeded" / dataset_cache.FILE
+        seeded.parent.mkdir()
+        seeded.write_bytes(b"12345")
+        dataset_cache.seed(s3, "cache-test", seeded, wait_sec=0)
+        dataset_cache.fetch(s3, "cache-test", fresh)
+        assert fresh.read_bytes() == b"12345"
+
+
+def test_bootstrap_fetches_dataset_before_running():
+    script = base64.b64decode(deploy.bootstrap_parameter()).decode("utf-8")
+    assert script.index("dataset_cache.py fetch") < script.index("spotsentry run")

@@ -151,3 +151,11 @@ Checked on 2026-11-07, read-only, before anything was deployed.
 - Docker Desktop failed to start here because of dead socket files in `%LOCALAPPDATA%\Docker\run`.
   Renaming that folder fixed it. A Docker Desktop update or a reboot may stop it recurring.
 - Docker's disk image lives on C:, which is nearly full. Experiments' temporary files go on D:.
+- **The Free plan only launches Free Tier eligible instance types.** The first deploy failed with
+  "The specified instance type is not eligible for Free Tier" for c5, m5 and c6i. In Sydney the
+  eligible x86 types with spot are c7i-flex.large, m7i-flex.large, t3.micro/small and
+  t8i.micro/small. The defaults are now c7i-flex.large, m7i-flex.large and t3.small.
+  `price-capacity-optimized` picked t3.small, the cheapest, with 2 GiB of memory.
+- **CIFAR-10's own server is slow from AWS:** about 85 KB/s to Sydney, 30 minutes for 170 MB, and
+  every replacement instance needs it before training resumes. The boot script now copies it from
+  the job's bucket first (`infra/dataset_cache.py`), and the first instance uploads it if missing.

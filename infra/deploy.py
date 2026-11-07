@@ -32,7 +32,7 @@ def parse_args(argv: list[str] | None = None) -> argparse.Namespace:
     parser.add_argument("--job", default="jobs/cifar_aws.yaml")
     parser.add_argument("--region", default="ap-southeast-2")
     parser.add_argument("--stack-name", default="spotsentry")
-    parser.add_argument("--instance-types", default="c5.large,m5.large,c6i.large",
+    parser.add_argument("--instance-types", default="c7i-flex.large,m7i-flex.large,t3.small",
                         help="exactly three types")
     parser.add_argument("--subnet-ids", default=None, help="default: the default VPC's subnets")
     parser.add_argument("--key-name", default="")

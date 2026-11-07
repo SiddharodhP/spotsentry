@@ -107,7 +107,7 @@ These replace placeholders in the results. Do them before tearing down.
 2. **The online planner**, with your AWS credentials:
 
    ```bash
-   spotsentry plan --job jobs/cifar_aws.yaml --candidates c5.large,m5.large,c6i.large --regions ap-southeast-2
+   spotsentry plan --job jobs/cifar_aws.yaml --candidates c7i-flex.large,m7i-flex.large,t3.small --regions ap-southeast-2
    ```
 
 3. **Record the screen** during a complete successful run. That is your backup for the live review.

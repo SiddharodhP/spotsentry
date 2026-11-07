@@ -15,7 +15,7 @@ Parameters:
     Default: jobs/cifar_aws.yaml
   InstanceTypes:
     Type: CommaDelimitedList
-    Default: c5.large,m5.large,c6i.large
+    Default: c7i-flex.large,m7i-flex.large,t3.small
     Description: Exactly three instance types, comma separated
   SubnetIds:
     Type: List<AWS::EC2::Subnet::Id>
