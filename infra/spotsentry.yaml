@@ -1,0 +1,192 @@
+AWSTemplateFormatVersion: "2010-09-09"
+Description: >-
+  SpotSentry. S3 bucket for checkpoints, least-privilege instance role, and a spot-only Auto
+  Scaling group that replaces interrupted instances. Deploy with infra/deploy.py.
+
+Parameters:
+  RepoUrl:
+    Type: String
+    Description: Git URL the instances clone the project from
+  RepoBranch:
+    Type: String
+    Default: main
+  JobConfigPath:
+    Type: String
+    Default: jobs/cifar_aws.yaml
+  InstanceTypes:
+    Type: CommaDelimitedList
+    Default: c5.large,m5.large,c6i.large
+    Description: Exactly three instance types, comma separated
+  SubnetIds:
+    Type: List<AWS::EC2::Subnet::Id>
+    Description: Public subnets in the zones to use
+  KeyName:
+    Type: String
+    Default: ""
+    Description: Optional EC2 key pair for SSH
+  BucketName:
+    Type: String
+    Description: Globally unique name for the checkpoint bucket
+  BootstrapBase64:
+    Type: String
+    Description: Base64 of infra/userdata.sh.tpl. deploy.py fills this in.
+  ImageId:
+    Type: AWS::SSM::Parameter::Value<AWS::EC2::Image::Id>
+    Default: /aws/service/canonical/ubuntu/server/22.04/stable/current/amd64/hvm/ebs-gp2/ami-id
+    Description: Ubuntu 22.04. Pass a custom AMI's SSM parameter to boot faster.
+
+Conditions:
+  HasKeyName: !Not [!Equals [!Ref KeyName, ""]]
+
+Resources:
+  CheckpointBucket:
+    Type: AWS::S3::Bucket
+    Properties:
+      BucketName: !Ref BucketName
+      PublicAccessBlockConfiguration:
+        BlockPublicAcls: true
+        BlockPublicPolicy: true
+        IgnorePublicAcls: true
+        RestrictPublicBuckets: true
+      LifecycleConfiguration:
+        Rules:
+          - Id: ExpireAfter30Days
+            Status: Enabled
+            ExpirationInDays: 30
+            AbortIncompleteMultipartUpload:
+              DaysAfterInitiation: 1
+
+  InstanceRole:
+    Type: AWS::IAM::Role
+    Properties:
+      AssumeRolePolicyDocument:
+        Version: "2012-10-17"
+        Statement:
+          - Effect: Allow
+            Principal: { Service: ec2.amazonaws.com }
+            Action: sts:AssumeRole
+      # Lets you open a shell from the console for debugging, with no SSH port open.
+      ManagedPolicyArns:
+        - !Sub "arn:${AWS::Partition}:iam::aws:policy/AmazonSSMManagedInstanceCore"
+      Policies:
+        - PolicyName: spotsentry-instance
+          PolicyDocument:
+            Version: "2012-10-17"
+            Statement:
+              - Sid: Bucket
+                Effect: Allow
+                Action: s3:ListBucket
+                Resource: !GetAtt CheckpointBucket.Arn
+              - Sid: Objects
+                Effect: Allow
+                Action: [s3:GetObject, s3:PutObject, s3:DeleteObject, s3:AbortMultipartUpload]
+                Resource: !Sub "${CheckpointBucket.Arn}/*"
+              - Sid: ReadOnlyEc2
+                Effect: Allow
+                Action:
+                  - ec2:DescribeSpotPriceHistory
+                  - ec2:GetSpotPlacementScores
+                  - ec2:DescribeInstances
+                  - ec2:DescribeAvailabilityZones
+                Resource: "*"
+              - Sid: ScaleOwnGroupOnly
+                Effect: Allow
+                Action: autoscaling:SetDesiredCapacity
+                Resource: !Sub "arn:${AWS::Partition}:autoscaling:${AWS::Region}:${AWS::AccountId}:autoScalingGroup:*:autoScalingGroupName/${AWS::StackName}-asg"
+              - Sid: Logs
+                Effect: Allow
+                Action: [logs:CreateLogStream, logs:PutLogEvents, logs:CreateLogGroup]
+                Resource: !Sub "arn:${AWS::Partition}:logs:${AWS::Region}:${AWS::AccountId}:log-group:/spotsentry/*"
+
+  InstanceProfile:
+    Type: AWS::IAM::InstanceProfile
+    Properties:
+      Roles: [!Ref InstanceRole]
+
+  FisRole:
+    Type: AWS::IAM::Role
+    Properties:
+      AssumeRolePolicyDocument:
+        Version: "2012-10-17"
+        Statement:
+          - Effect: Allow
+            Principal: { Service: fis.amazonaws.com }
+            Action: sts:AssumeRole
+      Policies:
+        - PolicyName: spotsentry-fis
+          PolicyDocument:
+            Version: "2012-10-17"
+            Statement:
+              - Effect: Allow
+                Action: ec2:DescribeInstances
+                Resource: "*"
+              - Effect: Allow
+                Action: ec2:SendSpotInstanceInterruptions
+                Resource: !Sub "arn:${AWS::Partition}:ec2:${AWS::Region}:${AWS::AccountId}:instance/*"
+                Condition:
+                  StringEquals: { "aws:ResourceTag/spotsentry": "true" }
+
+  LaunchTemplate:
+    Type: AWS::EC2::LaunchTemplate
+    Properties:
+      LaunchTemplateData:
+        ImageId: !Ref ImageId
+        KeyName: !If [HasKeyName, !Ref KeyName, !Ref AWS::NoValue]
+        IamInstanceProfile: { Arn: !GetAtt InstanceProfile.Arn }
+        MetadataOptions:
+          HttpTokens: required
+          HttpEndpoint: enabled
+          HttpPutResponseHopLimit: 1
+        BlockDeviceMappings:
+          - DeviceName: /dev/sda1
+            Ebs: { VolumeSize: 20, VolumeType: gp3, DeleteOnTermination: true }
+        UserData:
+          Fn::Base64: !Sub |
+            #!/bin/bash
+            export SPOTSENTRY_REPO_URL='${RepoUrl}'
+            export SPOTSENTRY_REPO_BRANCH='${RepoBranch}'
+            export SPOTSENTRY_JOB_CONFIG='${JobConfigPath}'
+            export SPOTSENTRY_STORE__BUCKET='${BucketName}'
+            export SPOTSENTRY_STORE__REGION='${AWS::Region}'
+            export SPOTSENTRY_AWS__ASG_NAME='${AWS::StackName}-asg'
+            export AWS_DEFAULT_REGION='${AWS::Region}'
+            echo '${BootstrapBase64}' | base64 -d > /opt/spotsentry-bootstrap.sh
+            bash /opt/spotsentry-bootstrap.sh > /var/log/spotsentry.log 2>&1
+
+  AutoScalingGroup:
+    Type: AWS::AutoScaling::AutoScalingGroup
+    Properties:
+      AutoScalingGroupName: !Sub "${AWS::StackName}-asg"
+      MinSize: "0"
+      MaxSize: "1"
+      DesiredCapacity: "1"
+      CapacityRebalance: true
+      VPCZoneIdentifier: !Ref SubnetIds
+      MixedInstancesPolicy:
+        InstancesDistribution:
+          OnDemandBaseCapacity: 0
+          OnDemandPercentageAboveBaseCapacity: 0
+          SpotAllocationStrategy: price-capacity-optimized
+        LaunchTemplate:
+          LaunchTemplateSpecification:
+            LaunchTemplateId: !Ref LaunchTemplate
+            Version: !GetAtt LaunchTemplate.LatestVersionNumber
+          Overrides:
+            - InstanceType: !Select [0, !Ref InstanceTypes]
+            - InstanceType: !Select [1, !Ref InstanceTypes]
+            - InstanceType: !Select [2, !Ref InstanceTypes]
+      Tags:
+        - Key: spotsentry
+          Value: "true"
+          PropagateAtLaunch: true
+        - Key: Name
+          Value: !Sub "${AWS::StackName}-worker"
+          PropagateAtLaunch: true
+
+Outputs:
+  BucketName:
+    Value: !Ref CheckpointBucket
+  AsgName:
+    Value: !Ref AutoScalingGroup
+  FisRoleArn:
+    Value: !GetAtt FisRole.Arn

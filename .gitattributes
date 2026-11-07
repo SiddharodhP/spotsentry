@@ -1,0 +1,6 @@
+# Files that run on Linux must keep LF line endings, even when checked out on Windows.
+* text=auto
+*.sh text eol=lf
+*.tpl text eol=lf
+Dockerfile* text eol=lf
+*.png binary

@@ -1,0 +1,21 @@
+# The local demo job: about 2 minutes of work with a 30 MB checkpoint.
+job_id: synthetic-demo
+workload:
+  class: "workloads.synthetic:SyntheticJob"
+  params: { total_steps: 2400, epochs: 4, step_seconds: 0.05, state_mb: 10, optimizer_multiplier: 2 }
+store:
+  type: s3
+  bucket: spotsentry-checkpoints
+  prefix: jobs/
+  endpoint_url: http://minio:9000
+  region: us-east-1
+metadata: { base_url: "http://aemm:1338", imdsv2: true, poll_interval_sec: 1 }
+checkpoint:
+  strategy: hybrid
+  interval: auto
+  min_interval_sec: 10
+  max_interval_sec: 60
+  rebalance_min_gap_sec: 3
+deadline: { safety_margin_sec: 5 }
+lease: { enabled: true, ttl_sec: 15, heartbeat_sec: 4, poll_sec: 1 }
+logging: { progress_every_steps: 40, flush_interval_sec: 1 }

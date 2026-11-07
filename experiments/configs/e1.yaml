@@ -1,0 +1,26 @@
+# E1: which checkpoint strategy is best? Synthetic job, exponential interruptions.
+# Time scale 30: a 30-minute job takes 60 s, a 2-minute notice 4 s, a 3-minute restart 6 s.
+id: e1
+runner: strategies
+seed: 101
+time_scale: 30
+repetitions: 5
+parallel: 6
+give_up_factor: 6
+spot_price: 0.034    # c5.large ap-south-1, estimated from the advisor's 60% savings
+on_demand_price: 0.085
+workload: { total_steps: 1200, step_seconds: 0.05, state_mb: 20, optimizer_multiplier: 2 }
+grid:
+  strategy:
+    - { name: none, strategy: none }
+    - { name: periodic_fixed_5min, strategy: periodic, interval_sec: 300 }
+    - { name: periodic_young, strategy: periodic }
+    - { name: reactive, strategy: reactive }
+    - { name: hybrid, strategy: hybrid }
+  mtbi:
+    - { name: short, seconds: 300 }    # 5 min
+    - { name: medium, seconds: 900 }   # 15 min
+    - { name: long, seconds: 3600 }    # 60 min
+quick:
+  repetitions: 1
+  workload: { total_steps: 300, step_seconds: 0.05, state_mb: 20, optimizer_multiplier: 2 }

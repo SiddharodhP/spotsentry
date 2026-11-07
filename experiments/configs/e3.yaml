@@ -1,0 +1,39 @@
+# E3: is resume exact? Deterministic CIFAR-10, uninterrupted against 1, 2 and 3 interruptions.
+# The full tier should match the uninterrupted run. The light tier loses optimizer state.
+# Runs one trial at a time: determinism needs a fixed thread count and an otherwise quiet CPU.
+id: e3
+runner: resume
+seed: 303
+repetitions: 5
+parallel: 1
+# Training takes about 15 s and each worker's clock restarts, so this must stay well under 15 / 3.
+interrupt_every_sec: 3
+
+max_wall_sec: 1800
+workload:
+  epochs: 4
+  batch_size: 128
+  lr: 0.001
+  width: 16
+  subset: 10000
+  test_subset: 2000
+  deterministic: true
+  num_threads: 4
+  data_dir: data
+grid:
+  tier: [full, light]
+  planned_interruptions: [0, 1, 2, 3]
+quick:
+  repetitions: 1
+  interrupt_every_sec: 0.3
+  workload:
+    epochs: 12
+    batch_size: 64
+    lr: 0.001
+    width: 8
+    dataset: fake
+    deterministic: true
+    num_threads: 4
+  grid:
+    tier: [full]
+    planned_interruptions: [0, 2]

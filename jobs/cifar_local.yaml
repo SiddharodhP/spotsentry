@@ -1,0 +1,16 @@
+# CIFAR-10 on the local Docker stack.
+job_id: cifar-demo
+workload:
+  class: "workloads.cifar_cnn:CifarCNN"
+  params: { epochs: 20, batch_size: 128, lr: 0.001, data_dir: data }
+store:
+  type: s3
+  bucket: spotsentry-checkpoints
+  prefix: jobs/
+  endpoint_url: http://minio:9000
+  region: us-east-1
+metadata: { base_url: "http://aemm:1338", imdsv2: true, poll_interval_sec: 2 }
+checkpoint: { strategy: hybrid, interval: auto, min_interval_sec: 30, max_interval_sec: 300 }
+deadline: { safety_margin_sec: 15 }
+lease: { enabled: true, ttl_sec: 60, heartbeat_sec: 15, poll_sec: 5 }
+logging: { progress_every_steps: 50 }

@@ -1,0 +1,251 @@
+mode,state_mb,mbps,budget,rep,chosen,outcome,deadline_met,saved,full_mb,predicted_s,actual_s,time_left,throughput_mbps,reason
+aware,10,5,10,2,skip,skipped,True,False,30,,,10.0,4.999,no_tier_fits
+aware,10,5,10,0,skip,skipped,True,False,30,,,10.0,5.019,no_tier_fits
+aware,10,5,10,1,skip,skipped,True,False,30,,,10.0,5.0,no_tier_fits
+aware,10,5,10,4,skip,skipped,True,False,30,,,10.0,5.007,no_tier_fits
+aware,10,5,10,3,skip,skipped,True,False,30,,,10.0,4.998,no_tier_fits
+aware,10,5,30,0,light,saved,True,True,30,20.833,15.975,30.0,5.0,
+aware,10,5,30,1,light,saved,True,True,30,20.832,15.97,30.0,5.0,
+aware,10,5,30,2,light,saved,True,True,30,20.84,15.971,30.0,4.998,
+aware,10,5,30,3,light,saved,True,True,30,20.758,15.978,30.0,5.018,
+aware,10,5,30,4,light,saved,True,True,30,20.763,15.971,30.0,5.017,
+aware,10,5,120,0,full,saved,True,True,30,62.514,48.031,120.0,4.999,
+aware,10,5,120,1,full,saved,True,True,30,62.177,47.98,120.0,5.026,
+aware,10,5,120,2,full,saved,True,True,30,62.514,48.031,120.0,4.999,
+aware,10,20,10,0,light,saved,True,True,30,5.239,3.971,10.0,19.979,
+aware,10,20,10,1,light,saved,True,True,30,5.199,3.972,10.0,20.133,
+aware,10,20,10,2,light,saved,True,True,30,5.236,3.974,10.0,19.99,
+aware,10,20,10,3,light,saved,True,True,30,5.228,4.016,10.0,20.019,
+aware,10,5,120,3,full,saved,True,True,30,62.514,48.03,120.0,4.999,
+aware,10,20,10,4,light,saved,True,True,30,5.161,3.971,10.0,20.282,
+aware,10,20,30,0,full,saved,True,True,30,15.711,12.03,30.0,19.986,
+aware,10,5,120,4,full,saved,True,True,30,62.406,48.022,120.0,5.008,
+aware,10,20,30,1,full,saved,True,True,30,15.711,12.028,30.0,19.986,
+aware,10,20,30,2,full,saved,True,True,30,15.482,12.033,30.0,20.283,
+aware,10,20,30,3,full,saved,True,True,30,15.588,12.032,30.0,20.144,
+aware,10,20,30,4,full,saved,True,True,30,15.464,12.03,30.0,20.308,
+aware,10,20,120,0,full,saved,True,True,30,15.273,12.033,120.0,20.563,
+aware,10,20,120,1,full,saved,True,True,30,15.702,12.035,120.0,19.997,
+aware,10,20,120,2,full,saved,True,True,30,15.325,12.031,120.0,20.493,
+aware,10,100,10,0,full,saved,True,True,30,3.231,2.426,10.0,99.64,
+aware,10,100,10,1,full,saved,True,True,30,2.986,2.427,10.0,108.114,
+aware,10,20,120,3,full,saved,True,True,30,15.473,12.03,120.0,20.296,
+aware,10,20,120,4,full,saved,True,True,30,15.43,12.032,120.0,20.352,
+aware,10,100,10,2,full,saved,True,True,30,2.8,2.427,10.0,115.545,
+aware,10,100,10,3,full,saved,True,True,30,2.906,2.42,10.0,111.201,
+aware,10,100,10,4,full,saved,True,True,30,3.223,2.424,10.0,99.9,
+aware,10,100,30,0,full,saved,True,True,30,3.238,2.424,30.0,99.413,
+aware,10,100,30,2,full,saved,True,True,30,3.128,2.429,30.0,103.046,
+aware,10,100,30,1,full,saved,True,True,30,3.257,2.419,30.0,98.842,
+aware,10,100,30,3,full,saved,True,True,30,3.209,2.428,30.0,100.363,
+aware,10,100,120,0,full,saved,True,True,30,3.223,2.38,120.0,99.918,
+aware,10,100,30,4,full,saved,True,True,30,2.911,2.42,30.0,110.998,
+aware,10,100,120,1,full,saved,True,True,30,3.242,2.427,120.0,99.286,
+aware,10,100,120,2,full,saved,True,True,30,3.021,2.424,120.0,106.816,
+aware,10,100,120,3,full,saved,True,True,30,2.998,2.428,120.0,107.666,
+aware,10,100,120,4,full,saved,True,True,30,2.908,2.429,120.0,111.124,
+aware,50,5,10,0,skip,skipped,True,False,150,,,10.0,5.019,no_tier_fits
+aware,50,5,10,1,skip,skipped,True,False,150,,,10.0,4.998,no_tier_fits
+aware,50,5,10,2,skip,skipped,True,False,150,,,10.0,5.0,no_tier_fits
+aware,50,5,10,3,skip,skipped,True,False,150,,,10.0,5.019,no_tier_fits
+aware,50,5,10,4,skip,skipped,True,False,150,,,10.0,5.007,no_tier_fits
+aware,50,5,30,0,skip,skipped,True,False,150,,,30.0,5.001,no_tier_fits
+aware,50,5,30,2,skip,skipped,True,False,150,,,30.0,5.036,no_tier_fits
+aware,50,5,30,1,skip,skipped,True,False,150,,,30.0,5.027,no_tier_fits
+aware,50,5,30,3,skip,skipped,True,False,150,,,30.0,5.001,no_tier_fits
+aware,50,5,30,4,skip,skipped,True,False,150,,,30.0,5.026,no_tier_fits
+aware,50,5,120,0,light,saved,True,True,150,103.588,80.045,120.0,5.028,
+aware,50,5,120,1,light,saved,True,True,150,104.154,80.042,120.0,5.001,
+aware,50,5,120,2,light,saved,True,True,150,103.768,80.047,120.0,5.019,
+aware,50,20,10,0,skip,skipped,True,False,150,,,10.0,20.315,no_tier_fits
+aware,50,20,10,1,skip,skipped,True,False,150,,,10.0,20.598,no_tier_fits
+aware,50,20,10,2,skip,skipped,True,False,150,,,10.0,20.316,no_tier_fits
+aware,50,20,10,3,skip,skipped,True,False,150,,,10.0,20.296,no_tier_fits
+aware,50,20,10,4,skip,skipped,True,False,150,,,10.0,20.397,no_tier_fits
+aware,50,20,30,0,light,saved,True,True,150,25.826,20.038,30.0,20.266,
+aware,50,20,30,1,light,saved,True,True,150,25.762,20.045,30.0,20.316,
+aware,50,5,120,3,light,saved,True,True,150,103.964,80.036,120.0,5.01,
+aware,50,5,120,4,light,saved,True,True,150,104.196,80.045,120.0,4.999,
+aware,50,20,30,2,light,saved,True,True,150,26.176,20.041,30.0,19.993,
+aware,50,20,30,3,light,saved,True,True,150,26.195,20.041,30.0,19.978,
+aware,50,20,30,4,light,saved,True,True,150,25.781,20.043,30.0,20.301,
+aware,50,20,120,0,full,saved,True,True,150,78.56,60.098,120.0,19.985,
+aware,50,20,120,1,full,saved,True,True,150,76.906,60.091,120.0,20.417,
+aware,50,20,120,2,full,saved,True,True,150,77.307,60.1,120.0,20.311,
+aware,50,100,10,0,light,saved,True,True,150,5.404,4.04,10.0,99.287,
+aware,50,100,10,1,light,saved,True,True,150,5.414,4.041,10.0,99.1,
+aware,50,100,10,2,light,saved,True,True,150,4.973,4.041,10.0,108.193,
+aware,50,100,10,3,light,saved,True,True,150,4.901,4.042,10.0,109.836,
+aware,50,100,10,4,light,saved,True,True,150,5.3,4.04,10.0,101.294,
+aware,50,100,30,0,full,saved,True,True,150,16.126,12.103,30.0,99.833,
+aware,50,20,120,3,full,saved,True,True,150,77.328,60.107,120.0,20.305,
+aware,50,100,30,1,full,saved,True,True,150,15.604,12.098,30.0,103.283,
+aware,50,100,30,2,full,saved,True,True,150,16.154,12.098,30.0,99.656,
+aware,50,20,120,4,full,saved,True,True,150,77.295,60.099,120.0,20.314,
+aware,50,100,30,3,full,saved,True,True,150,14.891,12.098,30.0,108.399,
+aware,50,100,30,4,full,saved,True,True,150,14.903,12.094,30.0,108.308,
+aware,50,100,120,0,full,saved,True,True,150,16.189,12.1,120.0,99.434,
+aware,50,100,120,1,full,saved,True,True,150,14.955,12.098,120.0,107.923,
+aware,50,100,120,2,full,saved,True,True,150,14.8,12.093,120.0,109.089,
+aware,50,100,120,3,full,saved,True,True,150,16.199,12.1,120.0,99.37,
+aware,200,5,10,0,skip,skipped,True,False,600,,,10.0,5.001,no_tier_fits
+aware,50,100,120,4,full,saved,True,True,150,14.872,12.094,120.0,108.543,
+aware,200,5,10,1,skip,skipped,True,False,600,,,10.0,5.02,no_tier_fits
+aware,200,5,10,2,skip,skipped,True,False,600,,,10.0,5.021,no_tier_fits
+aware,200,5,10,3,skip,skipped,True,False,600,,,10.0,5.027,no_tier_fits
+aware,200,5,10,4,skip,skipped,True,False,600,,,10.0,5.018,no_tier_fits
+aware,200,5,30,1,skip,skipped,True,False,600,,,30.0,5.0,no_tier_fits
+aware,200,5,30,0,skip,skipped,True,False,600,,,30.0,4.997,no_tier_fits
+aware,200,5,30,2,skip,skipped,True,False,600,,,30.0,5.009,no_tier_fits
+aware,200,5,30,3,skip,skipped,True,False,600,,,30.0,5.018,no_tier_fits
+aware,200,5,30,4,skip,skipped,True,False,600,,,30.0,5.0,no_tier_fits
+aware,200,5,120,0,skip,skipped,True,False,600,,,120.0,5.019,no_tier_fits
+aware,200,5,120,2,skip,skipped,True,False,600,,,120.0,5.024,no_tier_fits
+aware,200,5,120,1,skip,skipped,True,False,600,,,120.0,5.017,no_tier_fits
+aware,200,5,120,3,skip,skipped,True,False,600,,,120.0,5.02,no_tier_fits
+aware,200,20,10,0,skip,skipped,True,False,600,,,10.0,20.01,no_tier_fits
+aware,200,20,10,1,skip,skipped,True,False,600,,,10.0,20.298,no_tier_fits
+aware,200,20,10,2,skip,skipped,True,False,600,,,10.0,20.15,no_tier_fits
+aware,200,20,10,3,skip,skipped,True,False,600,,,10.0,20.308,no_tier_fits
+aware,200,5,120,4,skip,skipped,True,False,600,,,120.0,5.0,no_tier_fits
+aware,200,20,10,4,skip,skipped,True,False,600,,,10.0,20.746,no_tier_fits
+aware,200,20,30,0,skip,skipped,True,False,600,,,30.0,20.291,no_tier_fits
+aware,200,20,30,1,skip,skipped,True,False,600,,,30.0,19.999,no_tier_fits
+aware,200,20,30,2,skip,skipped,True,False,600,,,30.0,20.008,no_tier_fits
+aware,200,20,30,3,skip,skipped,True,False,600,,,30.0,19.969,no_tier_fits
+aware,200,20,30,4,skip,skipped,True,False,600,,,30.0,20.302,no_tier_fits
+aware,200,20,120,0,light,saved,True,True,600,102.89,80.126,120.0,20.348,
+aware,200,20,120,1,light,saved,True,True,600,103.257,80.128,120.0,20.275,
+aware,200,20,120,2,light,saved,True,True,600,103.968,80.13,120.0,20.135,
+aware,200,100,10,0,tiny,saved,True,True,600,9.956,8.145,10.0,108.079,
+aware,200,100,10,1,skip,skipped,True,False,600,,,10.0,99.562,no_tier_fits
+aware,200,100,10,2,skip,skipped,True,False,600,,,10.0,99.864,no_tier_fits
+aware,200,100,10,3,skip,skipped,True,False,600,,,10.0,100.228,no_tier_fits
+aware,200,100,10,4,tiny,saved,True,True,600,9.973,8.145,10.0,107.886,
+aware,200,100,30,0,light,saved,True,True,600,21.595,16.129,30.0,99.386,
+aware,200,100,30,1,light,saved,True,True,600,19.391,16.128,30.0,111.085,
+aware,200,100,30,2,light,saved,True,True,600,21.518,16.134,30.0,99.756,
+aware,200,20,120,3,light,saved,True,True,600,102.876,80.126,120.0,20.35,
+aware,200,20,120,4,light,saved,True,True,600,104.821,80.128,120.0,19.97,
+aware,200,100,30,3,light,saved,True,True,600,19.777,16.128,30.0,108.839,
+aware,200,100,30,4,light,saved,True,True,600,21.549,16.128,30.0,99.607,
+aware,200,100,120,0,full,saved,True,True,600,59.597,48.521,120.0,108.339,
+aware,200,100,120,1,full,saved,True,True,600,64.653,48.541,120.0,99.596,
+aware,200,100,120,2,full,saved,True,True,600,64.129,48.581,120.0,100.436,
+aware,500,5,10,0,skip,skipped,True,False,1500,,,10.0,4.998,no_tier_fits
+aware,500,5,10,1,skip,skipped,True,False,1500,,,10.0,5.0,no_tier_fits
+aware,500,5,10,2,skip,skipped,True,False,1500,,,10.0,5.037,no_tier_fits
+aware,200,100,120,3,full,saved,True,True,600,64.617,48.447,120.0,99.653,
+aware,500,5,10,3,skip,skipped,True,False,1500,,,10.0,5.009,no_tier_fits
+aware,500,5,30,0,skip,skipped,True,False,1500,,,30.0,5.019,no_tier_fits
+aware,200,100,120,4,full,saved,True,True,600,62.131,48.41,120.0,103.774,
+aware,500,5,30,1,skip,skipped,True,False,1500,,,30.0,5.008,no_tier_fits
+aware,500,5,30,3,skip,skipped,True,False,1500,,,30.0,5.02,no_tier_fits
+aware,500,5,30,4,skip,skipped,True,False,1500,,,30.0,5.035,no_tier_fits
+aware,500,5,120,0,skip,skipped,True,False,1500,,,120.0,4.999,no_tier_fits
+aware,500,5,30,2,skip,skipped,True,False,1500,,,30.0,5.0,no_tier_fits
+aware,500,5,120,2,skip,skipped,True,False,1500,,,120.0,5.008,no_tier_fits
+aware,500,5,120,1,skip,skipped,True,False,1500,,,120.0,5.009,no_tier_fits
+aware,500,5,10,4,skip,skipped,True,False,1500,,,10.0,5.0,no_tier_fits
+aware,500,5,120,3,skip,skipped,True,False,1500,,,120.0,5.021,no_tier_fits
+aware,500,5,120,4,skip,skipped,True,False,1500,,,120.0,5.008,no_tier_fits
+aware,500,20,10,0,skip,skipped,True,False,1500,,,10.0,19.987,no_tier_fits
+aware,500,20,10,1,skip,skipped,True,False,1500,,,10.0,19.973,no_tier_fits
+aware,500,20,10,2,skip,skipped,True,False,1500,,,10.0,20.01,no_tier_fits
+aware,500,20,10,3,skip,skipped,True,False,1500,,,10.0,19.985,no_tier_fits
+aware,500,20,10,4,skip,skipped,True,False,1500,,,10.0,19.988,no_tier_fits
+aware,500,20,30,0,skip,skipped,True,False,1500,,,30.0,20.318,no_tier_fits
+aware,500,20,30,1,skip,skipped,True,False,1500,,,30.0,20.301,no_tier_fits
+aware,500,20,30,2,skip,skipped,True,False,1500,,,30.0,19.98,no_tier_fits
+aware,500,20,30,3,skip,skipped,True,False,1500,,,30.0,20.584,no_tier_fits
+aware,500,20,30,4,skip,skipped,True,False,1500,,,30.0,20.081,no_tier_fits
+aware,500,20,120,0,skip,skipped,True,False,1500,,,120.0,20.444,no_tier_fits
+aware,500,20,120,1,skip,skipped,True,False,1500,,,120.0,20.376,no_tier_fits
+aware,500,20,120,2,skip,skipped,True,False,1500,,,120.0,20.335,no_tier_fits
+aware,500,20,120,3,skip,skipped,True,False,1500,,,120.0,20.361,no_tier_fits
+aware,500,20,120,4,skip,skipped,True,False,1500,,,120.0,20.265,no_tier_fits
+aware,500,100,10,0,skip,skipped,True,False,1500,,,10.0,104.117,no_tier_fits
+aware,500,100,10,1,skip,skipped,True,False,1500,,,10.0,99.293,no_tier_fits
+aware,500,100,10,4,skip,skipped,True,False,1500,,,10.0,113.475,no_tier_fits
+aware,500,100,10,3,skip,skipped,True,False,1500,,,10.0,108.432,no_tier_fits
+aware,500,100,10,2,skip,skipped,True,False,1500,,,10.0,98.707,no_tier_fits
+aware,500,100,30,0,tiny,saved,True,True,1500,25.897,20.347,30.0,103.737,
+aware,500,100,30,3,tiny,saved,True,True,1500,24.971,20.348,30.0,107.717,
+aware,500,100,30,2,tiny,saved,True,True,1500,23.352,20.349,30.0,115.458,
+aware,500,100,30,1,tiny,saved,True,True,1500,24.784,20.37,30.0,108.555,
+aware,500,100,30,4,tiny,saved,True,True,1500,24.478,20.345,30.0,109.961,
+aware,500,100,120,0,light,saved,True,True,1500,51.677,40.291,120.0,103.978,
+aware,500,100,120,1,light,saved,True,True,1500,49.278,40.297,120.0,109.218,
+aware,500,100,120,2,light,saved,True,True,1500,51.703,40.304,120.0,103.924,
+naive,10,5,10,0,full,skipped,False,False,30,62.505,,10.0,5.0,aborted: deadline passed
+naive,10,5,10,1,full,skipped,False,False,30,62.27,,10.0,5.018,aborted: deadline passed
+aware,500,100,120,3,light,saved,True,True,1500,49.326,40.311,120.0,109.108,
+naive,10,5,10,2,full,skipped,False,False,30,62.396,,10.0,5.008,aborted: deadline passed
+naive,10,5,10,3,full,skipped,False,False,30,62.506,,10.0,5.0,aborted: deadline passed
+naive,10,5,10,4,full,skipped,False,False,30,62.054,,10.0,5.036,aborted: deadline passed
+aware,500,100,120,4,light,saved,True,True,1500,53.609,40.3,120.0,100.111,
+naive,10,5,30,0,full,skipped,False,False,30,62.247,,30.0,5.02,aborted: deadline passed
+naive,10,5,30,1,full,skipped,False,False,30,62.511,,30.0,4.999,aborted: deadline passed
+naive,10,5,30,2,full,skipped,False,False,30,62.517,,30.0,4.999,aborted: deadline passed
+naive,10,5,30,3,full,skipped,False,False,30,62.541,,30.0,4.997,aborted: deadline passed
+naive,10,5,30,4,full,skipped,False,False,30,62.51,,30.0,4.999,aborted: deadline passed
+naive,10,5,120,0,full,saved,True,True,30,62.377,48.034,120.0,5.01,
+naive,10,5,120,1,full,saved,True,True,30,62.525,48.035,120.0,4.998,
+naive,10,5,120,2,full,saved,True,True,30,62.258,48.034,120.0,5.019,
+naive,10,20,10,0,full,skipped,False,False,30,15.467,,10.0,20.304,aborted: deadline passed
+naive,10,5,120,3,full,saved,True,True,30,62.279,48.027,120.0,5.018,
+naive,10,20,10,1,full,skipped,False,False,30,15.612,,10.0,20.114,aborted: deadline passed
+naive,10,20,10,2,full,skipped,False,False,30,15.692,,10.0,20.01,aborted: deadline passed
+naive,10,20,10,3,full,skipped,False,False,30,15.778,,10.0,19.9,aborted: deadline passed
+naive,10,5,120,4,full,saved,True,True,30,62.259,48.027,120.0,5.019,
+naive,10,20,10,4,full,skipped,False,False,30,15.287,,10.0,20.544,aborted: deadline passed
+naive,10,20,30,0,full,saved,True,True,30,15.723,12.03,30.0,19.971,
+naive,10,20,30,1,full,saved,True,True,30,15.716,12.031,30.0,19.98,
+naive,10,20,30,2,full,saved,True,True,30,15.716,12.032,30.0,19.98,
+naive,10,20,30,3,full,saved,True,True,30,15.394,12.033,30.0,20.4,
+naive,10,20,30,4,full,saved,True,True,30,15.713,12.027,30.0,19.984,
+naive,10,20,120,0,full,saved,True,True,30,15.438,12.028,120.0,20.342,
+naive,10,20,120,1,full,saved,True,True,30,15.376,12.028,120.0,20.424,
+naive,10,20,120,2,full,saved,True,True,30,15.584,12.033,120.0,20.15,
+naive,10,100,10,0,full,saved,True,True,30,2.931,2.428,10.0,110.212,
+naive,10,100,10,1,full,saved,True,True,30,2.972,2.428,10.0,108.642,
+naive,10,20,120,3,full,saved,True,True,30,15.578,12.027,120.0,20.157,
+naive,10,100,10,2,full,saved,True,True,30,3.149,2.428,10.0,102.32,
+naive,10,100,10,3,full,saved,True,True,30,2.971,2.428,10.0,108.667,
+naive,10,20,120,4,full,saved,True,True,30,15.313,12.027,120.0,20.509,
+naive,10,100,10,4,full,saved,True,True,30,3.016,2.425,10.0,106.98,
+naive,10,100,30,0,full,saved,True,True,30,2.91,2.38,30.0,111.02,
+naive,10,100,30,1,full,saved,True,True,30,3.23,2.427,30.0,99.696,
+naive,10,100,30,3,full,saved,True,True,30,3.114,2.378,30.0,103.519,
+naive,10,100,30,2,full,saved,True,True,30,3.225,2.377,30.0,99.843,
+naive,10,100,30,4,full,saved,True,True,30,2.983,2.427,30.0,108.215,
+naive,10,100,120,1,full,saved,True,True,30,3.222,2.421,120.0,99.934,
+naive,10,100,120,0,full,saved,True,True,30,3.135,2.431,120.0,102.801,
+naive,10,100,120,2,full,saved,True,True,30,2.961,2.429,120.0,109.034,
+naive,10,100,120,3,full,saved,True,True,30,3.1,2.428,120.0,103.985,
+naive,10,100,120,4,full,saved,True,True,30,3.242,2.429,120.0,99.31,
+naive,50,5,10,0,full,skipped,False,False,150,312.611,,10.0,4.998,aborted: deadline passed
+naive,50,5,10,1,full,skipped,False,False,150,311.756,,10.0,5.012,aborted: deadline passed
+naive,50,5,10,2,full,skipped,False,False,150,311.314,,10.0,5.019,aborted: deadline passed
+naive,50,5,10,3,full,skipped,False,False,150,311.798,,10.0,5.011,aborted: deadline passed
+naive,50,5,10,4,full,skipped,False,False,150,312.607,,10.0,4.998,aborted: deadline passed
+naive,50,5,30,0,full,skipped,False,False,150,312.706,,30.0,4.997,aborted: deadline passed
+naive,50,5,30,1,full,skipped,False,False,150,312.583,,30.0,4.999,aborted: deadline passed
+naive,50,5,30,2,full,skipped,False,False,150,312.578,,30.0,4.999,aborted: deadline passed
+naive,50,5,30,3,full,skipped,False,False,150,311.278,,30.0,5.02,aborted: deadline passed
+naive,50,5,30,4,full,skipped,False,False,150,311.296,,30.0,5.019,aborted: deadline passed
+naive,50,5,120,0,full,skipped,False,False,150,311.325,,120.0,5.019,aborted: deadline passed
+naive,50,5,120,1,full,skipped,False,False,150,311.937,,120.0,5.009,aborted: deadline passed
+naive,50,5,120,2,full,skipped,False,False,150,311.281,,120.0,5.02,aborted: deadline passed
+naive,50,20,10,0,full,skipped,False,False,150,77.361,,10.0,20.296,aborted: deadline passed
+naive,50,20,10,1,full,skipped,False,False,150,78.588,,10.0,19.978,aborted: deadline passed
+naive,50,20,10,2,full,skipped,False,False,150,78.509,,10.0,19.998,aborted: deadline passed
+naive,50,20,10,3,full,skipped,False,False,150,77.338,,10.0,20.303,aborted: deadline passed
+naive,50,20,10,4,full,skipped,False,False,150,77.259,,10.0,20.323,aborted: deadline passed
+naive,50,5,120,3,full,skipped,False,False,150,310.489,,120.0,5.032,aborted: deadline passed
+naive,50,20,30,0,full,skipped,False,False,150,78.555,,30.0,19.986,aborted: deadline passed
+naive,50,5,120,4,full,skipped,False,False,150,311.365,,120.0,5.018,aborted: deadline passed
+naive,50,20,30,1,full,skipped,False,False,150,77.36,,30.0,20.297,aborted: deadline passed
+naive,50,20,30,2,full,skipped,False,False,150,78.536,,30.0,19.991,aborted: deadline passed
+naive,50,20,30,3,full,skipped,False,False,150,78.569,,30.0,19.982,aborted: deadline passed
+naive,50,20,30,4,full,skipped,False,False,150,78.58,,30.0,19.98,aborted: deadline passed

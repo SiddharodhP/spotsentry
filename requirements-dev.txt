@@ -1,0 +1,2 @@
+# Only needed to lint the CloudFormation template.
+cfn-lint==1.60.0

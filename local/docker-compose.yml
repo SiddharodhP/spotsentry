@@ -1,0 +1,51 @@
+name: spotsentry
+
+services:
+  # Open-source MinIO was archived and its official images were withdrawn, so the image is
+  # set in .env. See docs/NOTES.md. The bucket is created by scripts/setup_local.py.
+  minio:
+    image: ${MINIO_IMAGE:-pgsty/minio:RELEASE.2026-08-04T00-00-00Z}
+    command: server /data --console-address ":9001"
+    environment:
+      MINIO_ROOT_USER: ${MINIO_ROOT_USER:-spotsentry}
+      MINIO_ROOT_PASSWORD: ${MINIO_ROOT_PASSWORD:-change-me-local-only}
+    ports:
+      - "9000:9000"
+      - "9001:9001"
+    volumes:
+      - minio-data:/data
+
+  worker:
+    profiles: ["worker"]
+    build:
+      context: ..
+      dockerfile: local/Dockerfile.worker
+    image: spotsentry-worker
+    environment:
+      MINIO_ROOT_USER: ${MINIO_ROOT_USER:-spotsentry}
+      MINIO_ROOT_PASSWORD: ${MINIO_ROOT_PASSWORD:-change-me-local-only}
+    volumes:
+      - cifar-data:/app/data
+
+  dashboard:
+    build:
+      context: ..
+      dockerfile: local/Dockerfile.worker
+    image: spotsentry-worker
+    command: >
+      python -m streamlit run dashboard/app.py --server.port 8501 --server.address 0.0.0.0
+      --server.headless true --browser.gatherUsageStats false
+    environment:
+      MINIO_ROOT_USER: ${MINIO_ROOT_USER:-spotsentry}
+      MINIO_ROOT_PASSWORD: ${MINIO_ROOT_PASSWORD:-change-me-local-only}
+      SPOTSENTRY_DASHBOARD_JOB: /app/jobs/synthetic_demo.yaml
+    ports:
+      - "8501:8501"
+    volumes:
+      - ../experiments/results:/app/experiments/results
+    depends_on:
+      - minio
+
+volumes:
+  minio-data:
+  cifar-data:

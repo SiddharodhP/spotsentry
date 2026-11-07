@@ -1,0 +1,20 @@
+# E2: does deadline-aware saving beat always saving everything?
+# state_mb is the model. The full tier is 3x that, light 1x, tiny 0.5x.
+# hard_kill stops a save at the time limit, as a real termination would.
+id: e2
+runner: deadline
+seed: 202
+repetitions: 5
+parallel: 3
+grid:
+  mode: [aware, naive]
+  state_mb: [10, 50, 200, 500]
+  mbps: [5, 20, 100]
+  budget: [10, 30, 120]
+quick:
+  repetitions: 1
+  grid:
+    mode: [aware, naive]
+    state_mb: [10, 100]
+    mbps: [20, 100]
+    budget: [5, 15]

@@ -1,0 +1,16 @@
+# A non-ML batch job, using the item-list adapter.
+job_id: image-batch
+workload:
+  class: "workloads.image_batch:ImageBatchJob"
+  params: { items: 400, size: 512, output_size: 128, extra_seconds: 0.1 }
+store:
+  type: s3
+  bucket: spotsentry-checkpoints
+  prefix: jobs/
+  endpoint_url: http://minio:9000
+  region: us-east-1
+metadata: { base_url: "http://aemm:1338", imdsv2: true, poll_interval_sec: 1 }
+checkpoint: { strategy: hybrid, interval: auto, min_interval_sec: 10, max_interval_sec: 60 }
+deadline: { safety_margin_sec: 5 }
+lease: { enabled: true, ttl_sec: 15, heartbeat_sec: 4, poll_sec: 1 }
+logging: { progress_every_steps: 20, flush_interval_sec: 1 }

@@ -1,0 +1,31 @@
+# E4: how accurate is the run-time prediction? Run this on every machine you have: results are
+# labelled with the machine's name and analyze.py groups by it. The spec asks for 2 or more.
+id: e4
+runner: prediction
+seed: 404
+repetitions: 5
+parallel: 1
+max_wall_sec: 1800
+grid:
+  size:
+    - { name: synth_small, kind: synthetic,
+        params: { total_steps: 400, step_seconds: 0.02, state_mb: 5 } }
+    - { name: synth_medium, kind: synthetic,
+        params: { total_steps: 1500, step_seconds: 0.02, state_mb: 20 } }
+    - { name: synth_large, kind: synthetic,
+        params: { total_steps: 3000, step_seconds: 0.02, state_mb: 50 } }
+    - { name: cifar_small, kind: cifar, warmup: 5, profile: 30,
+        params: { epochs: 1, batch_size: 128, width: 16, subset: 5000, test_subset: 1000,
+                  data_dir: data, num_threads: 4 } }
+    - { name: cifar_medium, kind: cifar, warmup: 5, profile: 30,
+        params: { epochs: 2, batch_size: 128, width: 16, subset: 10000, test_subset: 1000,
+                  data_dir: data, num_threads: 4 } }
+    - { name: cifar_large, kind: cifar, warmup: 5, profile: 30,
+        params: { epochs: 2, batch_size: 128, width: 32, subset: 20000, test_subset: 1000,
+                  data_dir: data, num_threads: 4 } }
+quick:
+  repetitions: 1
+  grid:
+    size:
+      - { name: synth_small, kind: synthetic,
+          params: { total_steps: 200, step_seconds: 0.02, state_mb: 5 } }

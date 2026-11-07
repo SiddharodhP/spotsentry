@@ -1,0 +1,10 @@
+.venv
+.git
+.env
+.spotsentry-store
+data
+experiments/results
+experiments/tmp
+**/__pycache__
+.pytest_cache
+.ruff_cache

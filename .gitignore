@@ -1,0 +1,16 @@
+.venv/
+__pycache__/
+*.pyc
+.env
+.spotsentry-store/
+.pytest_cache/
+.ruff_cache/
+*.egg-info/
+build/
+dist/
+data/
+experiments/tmp/
+spotsentry/planner/history.jsonl
+infra/.deploy-state.json
+# The course spec. Left out of the public repository; remove this line to include it.
+SPOTSENTRY_SPEC.md

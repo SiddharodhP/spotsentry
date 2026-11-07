@@ -1,0 +1,11 @@
+{
+  "version": "0.0.1",
+  "configurations": [
+    {
+      "name": "dashboard",
+      "runtimeExecutable": ".venv/Scripts/python",
+      "runtimeArgs": ["-m", "spotsentry.cli", "dashboard", "--job", "jobs/synthetic_demo.yaml"],
+      "port": 8501
+    }
+  ]
+}

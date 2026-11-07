@@ -1,0 +1,31 @@
+# E6: does the adaptive interval help? Fixed 1, 5 and 15 minutes against adaptive Young, which
+# starts from a deliberately wrong prior (the 1-hour default) and learns from interruptions seen.
+#
+# Checkpoints are synchronous and bandwidth limited here (15 MB at 100 Mbps, about 1.2 s, which is
+# 36 s in real terms at this time scale). Without a real cost per checkpoint, checkpointing more
+# often is always better and there would be no interval worth tuning.
+id: e6
+runner: strategies
+seed: 606
+time_scale: 30
+repetitions: 5
+parallel: 8
+give_up_factor: 6
+spot_price: 0.034
+on_demand_price: 0.085
+workload: { total_steps: 1200, step_seconds: 0.05, state_mb: 5, optimizer_multiplier: 2 }
+checkpoint: { async: false }
+store: { bandwidth_limit_mbps: 100 }
+grid:
+  strategy:
+    - { name: fixed_1min, strategy: periodic, interval_sec: 60 }
+    - { name: fixed_5min, strategy: periodic, interval_sec: 300 }
+    - { name: fixed_15min, strategy: periodic, interval_sec: 900 }
+    - { name: adaptive_young, strategy: periodic, mtbi_prior_sec: 3600 }
+  mtbi:
+    - { name: short, seconds: 300 }
+    - { name: medium, seconds: 900 }
+    - { name: long, seconds: 3600 }
+quick:
+  repetitions: 1
+  workload: { total_steps: 300, step_seconds: 0.05, state_mb: 5, optimizer_multiplier: 2 }

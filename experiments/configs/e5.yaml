@@ -1,0 +1,20 @@
+# E5: does asynchronous checkpointing reduce overhead? No interruptions.
+id: e5
+runner: async
+seed: 505
+repetitions: 5
+parallel: 1
+interval_sec: 8
+bandwidth_mbps: 400
+max_wall_sec: 600
+workload: { total_steps: 1000, step_seconds: 0.03 }
+grid:
+  mode: [sync, async]
+  state_mb: [50, 200, 500, 1000]
+quick:
+  repetitions: 1
+  interval_sec: 3
+  workload: { total_steps: 300, step_seconds: 0.03 }
+  grid:
+    mode: [sync, async]
+    state_mb: [50, 200]

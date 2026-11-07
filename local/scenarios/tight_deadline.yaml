@@ -1,0 +1,14 @@
+# A large state, slow network and only 30 seconds: the selector falls back to a smaller tier.
+# Full is 600 MB, about a minute at 100 Mbps, and cannot fit. Light is 200 MB and tiny 100 MB.
+# Which of those it picks depends on the upload speed it measures, so accept either.
+name: tight_deadline
+job: jobs/synthetic_demo.yaml
+replacement_delay_sec: 3
+workload_params: { state_mb: 200, total_steps: 800, epochs: 2 }
+overrides:
+  checkpoint: { min_interval_sec: 600, max_interval_sec: 600, strategy: reactive }
+  deadline: { override_seconds: 30 }
+  store: { bandwidth_limit_mbps: 100 }
+interruptions:
+  - { after_sec: 15, notice_lead_sec: 40 }
+expect: { exit_codes: [75, 0], emergency_tier: [light, tiny] }

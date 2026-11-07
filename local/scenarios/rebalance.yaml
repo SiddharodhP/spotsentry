@@ -1,0 +1,9 @@
+# A rebalance recommendation arrives 10 s before the interruption notice: early checkpoint first.
+name: rebalance
+job: jobs/synthetic_demo.yaml
+replacement_delay_sec: 3
+overrides:
+  checkpoint: { min_interval_sec: 600, max_interval_sec: 600 }
+interruptions:
+  - { after_sec: 25, rebalance_lead_sec: 10, notice_lead_sec: 30 }
+expect: { exit_codes: [75, 0], rebalance_checkpoint: true }

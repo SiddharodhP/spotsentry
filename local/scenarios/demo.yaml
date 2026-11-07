@@ -1,0 +1,8 @@
+# The classic demo: two interruptions, then the job completes.
+name: demo
+job: jobs/synthetic_demo.yaml
+replacement_delay_sec: 3
+interruptions:
+  - { after_sec: 25, notice_lead_sec: 30 }
+  - { after_sec: 25, notice_lead_sec: 30 }
+expect: { exit_codes: [75, 75, 0], emergency_tier: full }

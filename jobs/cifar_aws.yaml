@@ -1,0 +1,17 @@
+# CIFAR-10 on real spot instances. infra/deploy.py replaces the bucket name when it deploys.
+# On EC2: the instance role provides credentials and the metadata service is at its default URL.
+job_id: cifar-aws
+workload:
+  class: "workloads.cifar_cnn:CifarCNN"
+  params: { epochs: 20, batch_size: 128, lr: 0.001, data_dir: data }
+store:
+  type: s3
+  bucket: spotsentry-checkpoints
+  prefix: jobs/
+  region: ap-south-1
+metadata: { imdsv2: true, poll_interval_sec: 2 }
+checkpoint: { strategy: hybrid, interval: auto, min_interval_sec: 30, max_interval_sec: 1800 }
+deadline: { safety_margin_sec: 15 }
+lease: { enabled: true, ttl_sec: 60, heartbeat_sec: 15, poll_sec: 5 }
+aws: { scale_to_zero_on_complete: true }
+logging: { progress_every_steps: 50 }
