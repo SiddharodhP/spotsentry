@@ -48,12 +48,12 @@ as finished, even a partial one. Name experiments with `--only` instead.
 | Dashboard experiments section | Viewed in a browser with all six plots | 2026-11-07 |
 | Full CIFAR-10 run on a real spot instance, S3 checkpoints, lease, scale to zero on completion | `deploy.py` to Sydney, t3.small spot: 20 epochs, 80.7% test accuracy, 55 checkpoints of 7.5 MB, 0.13-0.2 s upload, under 2 ms blocking | 2026-11-07 |
 | Recovery after an instance is killed with no notice | Terminated through the Auto Scaling group at epoch 18. Replacement took the lease and restored the full checkpoint at epoch 18 step 361, 88 s after the kill (boot included). Under 50 steps lost | 2026-11-07 |
+| **Real spot interruption on AWS**: notice, emergency save, exit 75, replacement resumes at the same step | Paid plan, AWS FIS `aws:ec2:send-spot-instance-interruptions` from `demo_aws.py --interrupt`. Notice seen with 103 s left; full tier predicted 0.20 s, saved in 0.15 s at epoch 3 step 219; exit 75 0.41 s after the notice. Replacement restored the same step, optimizer and RNG included, 80 s after the notice and 38 s before the old instance's deadline. No rebalance signal was seen before the notice | 2026-11-07 |
 
 ## Not verified
 
-- **A real two-minute spot notice on AWS.** It needs AWS FIS, which the Free plan denies. The real
-  run covered deploy, S3 checkpoints, the lease, a kill with no notice, and completion. The notice
-  and rebalance paths still rest on AWS's metadata mock.
+- **A real rebalance signal.** The FIS interruption gave a notice with no rebalance recommendation
+  before it, so the early-checkpoint-on-rebalance path still rests on AWS's metadata mock.
 - **`spotsentry plan` online**, which needs AWS credentials. Offline mode works.
 - **E4 on a second machine**, and **E1 on CIFAR-10**. See `docs/RESULTS.md` for what did run.
 - **`relative_speed.yaml` holds placeholder numbers**, until measured on real instance types.
@@ -115,7 +115,7 @@ Checked on 2026-11-07, read-only, before anything was deployed.
   `aws login` named Sydney as the account's region. The project's AWS defaults were moved there from
   Mumbai, and Sydney prices and advisor data were added to the planner's tables.
 - **AWS FIS is denied on the Free plan,** even in Sydney, so "Initiate interruption" needs the Paid
-  plan.
+  plan. After upgrading, FIS worked; the Sydney-only rule stayed.
 
 ## Decisions and departures from the spec
 
