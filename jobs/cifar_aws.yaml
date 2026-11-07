@@ -6,7 +6,7 @@ workload:
   params: { epochs: 20, batch_size: 128, lr: 0.001, data_dir: data }
 store:
   type: s3
-  bucket: spotsentry-checkpoints
+  bucket: spotsentry-662182610728-ap-southeast-2
   prefix: jobs/
   region: ap-southeast-2
 metadata: { imdsv2: true, poll_interval_sec: 2 }
