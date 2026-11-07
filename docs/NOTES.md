@@ -159,3 +159,7 @@ Checked on 2026-11-07, read-only, before anything was deployed.
 - **CIFAR-10's own server is slow from AWS:** about 85 KB/s to Sydney, 30 minutes for 170 MB, and
   every replacement instance needs it before training resumes. The boot script now copies it from
   the job's bucket first (`infra/dataset_cache.py`), and the first instance uploads it if missing.
+- **t3.small ran out of memory loading CIFAR-10** (exit 137). Normalising the images made four
+  600 MB copies. It is now done in place: peak memory 2.2 GB to 1.2 GB on this laptop, with
+  bit-identical tensors (checked with `torch.equal` on the real data). The boot script also adds a
+  2 GB swap file.

@@ -47,8 +47,11 @@ class SmallCNN(nn.Module):
 
 
 def _prepare(images: np.ndarray, labels: list[int] | np.ndarray) -> TensorDataset:
-    tensor = torch.from_numpy(images).permute(0, 3, 1, 2).float() / 255.0
-    return TensorDataset((tensor - _MEAN) / _STD, torch.as_tensor(labels, dtype=torch.long))
+    # In place, so the 50,000 training images exist as floats once (600 MB), not four times.
+    # Same operations in the same order as before, so the values are bit-identical.
+    tensor = torch.from_numpy(images).permute(0, 3, 1, 2).float()
+    tensor.div_(255.0).sub_(_MEAN).div_(_STD)
+    return TensorDataset(tensor, torch.as_tensor(labels, dtype=torch.long))
 
 
 def _fake_data(count: int, seed: int) -> tuple[np.ndarray, np.ndarray]:

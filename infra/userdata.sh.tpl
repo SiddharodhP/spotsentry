@@ -5,6 +5,11 @@ set -euxo pipefail
 export HOME=/root
 APP=/opt/spotsentry
 
+# Swap, so a memory spike on a small type (t3.small has 2 GiB) slows down rather than kills the job.
+if [ ! -f /swapfile ]; then
+  fallocate -l 2G /swapfile && chmod 600 /swapfile && mkswap /swapfile && swapon /swapfile || true
+fi
+
 if [ ! -x "$APP/.venv/bin/spotsentry" ]; then
   apt-get update -y
   apt-get install -y git curl
