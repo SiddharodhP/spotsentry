@@ -1,6 +1,7 @@
-"""Follow a job on real AWS, and optionally trigger a real spot interruption.
+"""Follow a job on real AWS, start a fresh run, or trigger a real spot interruption.
 
     python scripts/demo_aws.py                      # show state and tail events
+    python scripts/demo_aws.py --start              # clear the finished job, launch one instance
     python scripts/demo_aws.py --interrupt          # interrupt the instance using AWS FIS
 """
 
@@ -41,6 +42,42 @@ def running_instances(ec2) -> list[dict]:
     return [i for r in response["Reservations"] for i in r["Instances"]]
 
 
+KEEP_ON_START = ("plan.json",)
+
+
+def clear_job(s3, bucket: str, root: str) -> int:
+    """Delete the job's status, lease, events and checkpoints, so the next worker starts at epoch 0.
+
+    A completed job's workers exit at once, so a new demo run needs this. plan.json is kept, and
+    nothing outside the job's folder (such as the dataset copy) is touched.
+    """
+    deleted = 0
+    for page in s3.get_paginator("list_objects_v2").paginate(Bucket=bucket, Prefix=root):
+        keys = [
+            {"Key": o["Key"]}
+            for o in page.get("Contents", [])
+            if o["Key"][len(root):] not in KEEP_ON_START
+        ]
+        if keys:
+            s3.delete_objects(Bucket=bucket, Delete={"Objects": keys, "Quiet": True})
+            deleted += len(keys)
+    return deleted
+
+
+def start_fresh(session, bucket: str, root: str, asg_name: str, running: list[dict]) -> bool:
+    if running:
+        print("An instance is already running this job. Wait for it to finish, or tear down first.")
+        return False
+    count = clear_job(session.client("s3"), bucket, root)
+    print(f"Cleared {count} objects under s3://{bucket}/{root} (kept {', '.join(KEEP_ON_START)}).")
+    session.client("autoscaling").set_desired_capacity(
+        AutoScalingGroupName=asg_name, DesiredCapacity=1, HonorCooldown=False
+    )
+    print(f"Asked {asg_name} for one instance. Training starts about 2 minutes after launch.")
+    print("It costs money until the job finishes or you run: python infra/teardown.py")
+    return True
+
+
 def interrupt_with_fis(session, role_arn: str) -> None:
     """Create an FIS experiment template and start it: a real two-minute spot notice."""
     fis = session.client("fis")
@@ -75,6 +112,8 @@ def interrupt_with_fis(session, role_arn: str) -> None:
 def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__.splitlines()[0])
     parser.add_argument("--job", default=str(ROOT / "jobs" / "cifar_aws.yaml"))
+    parser.add_argument("--start", action="store_true",
+                        help="clear the job's previous run from the bucket, launch one instance")
     parser.add_argument("--interrupt", action="store_true")
     parser.add_argument("--no-follow", action="store_true", help="print once and exit")
     args = parser.parse_args()
@@ -98,6 +137,15 @@ def main() -> int:
     else:
         print("No running instance tagged spotsentry=true.")
 
+    store = make_store(config.store)
+    root = f"{config.store.prefix}{config.job_id}/"
+    if args.start:
+        if not state.get("AsgName"):
+            print("infra/.deploy-state.json has no AsgName. Was this deployed with deploy.py?")
+            return 1
+        if not start_fresh(session, config.store.bucket, root, state["AsgName"], instances):
+            return 1
+
     if args.interrupt:
         if not state.get("FisRoleArn"):
             print("infra/.deploy-state.json has no FisRoleArn. Was this deployed with deploy.py?")
@@ -106,8 +154,6 @@ def main() -> int:
     else:
         print(CONSOLE_STEPS)
 
-    store = make_store(config.store)
-    root = f"{config.store.prefix}{config.job_id}/"
     seen = 0
     print("Events (Ctrl+C to stop):")
     try:

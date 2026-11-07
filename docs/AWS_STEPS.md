@@ -78,6 +78,20 @@ Free plan, and ran a full CIFAR-10 job (see `docs/NOTES.md`).
    spotsentry dashboard --job jobs/cifar_aws.yaml
    ```
 
+## Run it again
+
+A finished job stays marked as completed, so a new instance would exit at once. To start over
+at epoch 0 on the stack you already have, without redeploying:
+
+```bash
+python scripts/demo_aws.py --start
+```
+
+It deletes the job's previous status, lease, events and checkpoints from the bucket (it keeps
+`plan.json` and the CIFAR-10 copy), asks the Auto Scaling group for one instance, then follows the
+events. It refuses if an instance is already running. Training starts about 2 minutes after
+launch, and the job scales back to zero when it finishes.
+
 ## Interrupt it for real
 
 Wait until a few checkpoints appear in the dashboard, then do either of these:
