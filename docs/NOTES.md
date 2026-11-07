@@ -49,6 +49,7 @@ as finished, even a partial one. Name experiments with `--only` instead.
 | Full CIFAR-10 run on a real spot instance, S3 checkpoints, lease, scale to zero on completion | `deploy.py` to Sydney, t3.small spot: 20 epochs, 80.7% test accuracy, 55 checkpoints of 7.5 MB, 0.13-0.2 s upload, under 2 ms blocking | 2026-11-07 |
 | Recovery after an instance is killed with no notice | Terminated through the Auto Scaling group at epoch 18. Replacement took the lease and restored the full checkpoint at epoch 18 step 361, 88 s after the kill (boot included). Under 50 steps lost | 2026-11-07 |
 | **Real spot interruption on AWS**: notice, emergency save, exit 75, replacement resumes at the same step | Paid plan, AWS FIS `aws:ec2:send-spot-instance-interruptions` from `demo_aws.py --interrupt`. Notice seen with 103 s left; full tier predicted 0.20 s, saved in 0.15 s at epoch 3 step 219; exit 75 0.41 s after the notice. Replacement restored the same step, optimizer and RNG included, 80 s after the notice and 38 s before the old instance's deadline. No rebalance signal was seen before the notice | 2026-11-07 |
+| Resume is exact on real AWS too | The two AWS runs, one killed with no notice at epoch 18 and one given a real spot notice at epoch 3, ended with identical weights checksum (34172.22749018733), test loss and per-epoch accuracy (80.71% final). The first run's files are kept under `archive/` in the bucket | 2026-11-07 |
 
 ## Not verified
 
