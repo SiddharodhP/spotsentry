@@ -106,3 +106,30 @@ def test_lease_expired_means_not_running(store):
 def test_describe_handles_all_event_kinds():
     assert "full" in describe({"type": "checkpoint_done", "tier": "full", "size_bytes": 1000000})
     assert describe({"type": "unknown"}) == ""
+
+
+def test_cost_without_plan_prices_the_running_type(store):
+    events = [
+        {"ts": "2026-01-01T00:00:00Z", "type": "job_start", "instance_id": "i-1",
+         "instance_type": "t3.small", "az": "ap-southeast-2c"},
+        {"ts": "2026-01-01T01:00:00Z", "type": "job_progress", "instance_id": "i-1",
+         "instance_type": "t3.small", "az": "ap-southeast-2c"},
+    ]
+    body = "\n".join(json.dumps(e) for e in events) + "\n"
+    store.put_bytes("jobs/j/events/i-1_1.jsonl", body.encode())
+    cost = load_job(store, "j").cost()
+    assert cost["on_demand_price"] == 0.0264  # Sydney list price in the shipped table
+    assert cost["spot_price"] < cost["on_demand_price"]
+    assert "t3.small in ap-southeast-2" in cost["source"]
+    assert not cost["from_plan"]
+
+
+def test_cost_ignores_a_plan_for_a_different_type(store):
+    events = [
+        {"ts": "2026-01-01T00:00:00Z", "type": "job_start", "instance_id": "i-1",
+         "instance_type": "t3.small", "az": "ap-southeast-2c"},
+    ]
+    store.put_bytes("jobs/j/events/i-1_1.jsonl", (json.dumps(events[0]) + "\n").encode())
+    plan = {"instance_type": "c5.large", "spot_price": 0.03, "on_demand_price": 0.085}
+    store.put_bytes("jobs/j/plan.json", json.dumps(plan).encode())
+    assert load_job(store, "j").cost()["on_demand_price"] == 0.0264

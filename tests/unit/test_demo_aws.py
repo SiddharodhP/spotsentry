@@ -80,3 +80,10 @@ def test_start_clears_then_asks_for_one_instance(s3):
     assert session.capacity == [
         {"AutoScalingGroupName": "asg", "DesiredCapacity": 1, "HonorCooldown": False}
     ]
+
+
+def test_event_times_are_shown_in_local_time():
+    from datetime import UTC, datetime
+
+    expected = datetime(2026, 1, 1, 12, 0, 5, tzinfo=UTC).astimezone().strftime("%H:%M:%S")
+    assert demo_aws.local_time("2026-01-01T12:00:05.123456Z") == expected

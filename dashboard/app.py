@@ -175,7 +175,7 @@ def section_cost(view: JobView) -> None:
     a.metric("Spot cost so far", f"${cost['spot_cost']:.5f}")
     b.metric("Same time on demand", f"${cost['on_demand_cost']:.5f}")
     c.metric("Saved", f"{cost['saved_percent']:.0f}%")
-    source = "from the plan" if cost["from_plan"] else "default c5.large estimate (no plan yet)"
+    source = cost["source"]
     st.caption(
         f"{cost['instance_hours'] * 3600:.0f} instance-seconds at spot "
         f"${cost['spot_price']:.4f}/h vs on-demand ${cost['on_demand_price']:.4f}/h, {source}."

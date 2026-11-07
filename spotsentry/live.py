@@ -106,11 +106,38 @@ class JobView:
             if e.get("type") == "job_progress" and "loss" in e
         ]
 
-    def cost(self) -> dict[str, float | bool]:
-        """Spot cost so far against what the same run time costs on demand."""
+    def prices(self) -> tuple[float, float, str]:
+        """(spot, on-demand, where they came from) for the instance type actually running.
+
+        In order: the plan's numbers for that type, the plan's own pick, the shipped price table
+        with the Spot Advisor's typical saving, and last a fixed c5.large estimate.
+        """
         plan = self.plan or {}
-        spot = float(plan.get("spot_price") or DEFAULT_SPOT)
-        on_demand = float(plan.get("on_demand_price") or DEFAULT_ON_DEMAND)
+        running = self.instance_type
+        for candidate in plan.get("candidates") or []:
+            if candidate.get("instance_type") == running and candidate.get("spot_price"):
+                if not self.az or candidate.get("az") in (None, self.az):
+                    return (float(candidate["spot_price"]), float(candidate["on_demand_price"]),
+                            "from the plan")
+        if plan.get("spot_price") and running in (None, plan.get("instance_type")):
+            return float(plan["spot_price"]), float(plan["on_demand_price"]), "from the plan"
+        if running and self.az:
+            from spotsentry.planner.pricing import on_demand_price, spot_price_estimate
+            from spotsentry.planner.risk import AdvisorData
+
+            region = self.az.rstrip("abcdefghijklmnopqrstuvwxyz")
+            on_demand = on_demand_price(region, running)
+            entry = AdvisorData.load(offline=True).entry(region, running)
+            if on_demand and entry:
+                spot = spot_price_estimate(on_demand, entry.savings_percent)
+                return (spot, on_demand,
+                        f"{running} in {region}: on-demand list price, spot estimated from the "
+                        f"Spot Advisor's typical {entry.savings_percent}% saving")
+        return DEFAULT_SPOT, DEFAULT_ON_DEMAND, "default c5.large estimate (no price data)"
+
+    def cost(self) -> dict[str, float | bool | str]:
+        """Spot cost so far against what the same run time costs on demand."""
+        spot, on_demand, source = self.prices()
         hours = self.instance_seconds / 3600.0
         spot_cost = hours * spot
         od_cost = hours * on_demand
@@ -121,7 +148,8 @@ class JobView:
             "spot_cost": spot_cost,
             "on_demand_cost": od_cost,
             "saved_percent": (1 - spot / on_demand) * 100 if on_demand else 0.0,
-            "from_plan": bool(plan.get("spot_price")),
+            "from_plan": source == "from the plan",
+            "source": source,
         }
 
 

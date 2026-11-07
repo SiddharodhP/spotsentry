@@ -2,7 +2,7 @@
 
 ## The day before
 
-- Run the whole AWS demo once and **record the screen**.
+- Run the whole AWS demo once and **record the screen**, following [RECORDING.md](RECORDING.md).
 - Check the local demo works, so you have a fallback if the network fails.
 - Run `python experiments/plots.py` and check the plots are in `experiments/results/`.
 

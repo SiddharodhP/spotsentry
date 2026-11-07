@@ -19,7 +19,7 @@ sys.path.insert(0, str(ROOT))
 
 from spotsentry.config import load_config  # noqa: E402
 from spotsentry.events import read_events  # noqa: E402
-from spotsentry.live import describe  # noqa: E402
+from spotsentry.live import describe, parse_ts  # noqa: E402
 from spotsentry.store import make_store  # noqa: E402
 
 STATE_FILE = ROOT / "infra" / ".deploy-state.json"
@@ -43,6 +43,11 @@ def running_instances(ec2) -> list[dict]:
 
 
 KEEP_ON_START = ("plan.json",)
+
+
+def local_time(ts: str) -> str:
+    """HH:MM:SS in this computer's time zone, matching the dashboard and the taskbar clock."""
+    return parse_ts(ts).astimezone().strftime("%H:%M:%S")
 
 
 def clear_job(s3, bucket: str, root: str) -> int:
@@ -162,7 +167,7 @@ def main() -> int:
             for event in events[seen:]:
                 if event.get("type") != "job_progress":
                     print(
-                        f"{event['ts'][11:19]}  {event.get('instance_id', '')[:19]:<20}"
+                        f"{local_time(event['ts'])}  {event.get('instance_id', '')[:19]:<20}"
                         f"{event['type']:<22}{describe(event)}"
                     )
             seen = len(events)
