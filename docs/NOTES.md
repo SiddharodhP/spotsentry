@@ -97,6 +97,24 @@ Worth mentioning in the paper's discussion, because unit tests passed throughout
    every process that imports numpy. 34 of 75 E1 trials crashed. Trial workers now use one thread.
 9. **E3 planned 2 and 3 interruptions but got 1,** because the job ended before the second notice.
    Trials now fail when the count does not match the plan.
+10. **The planner's data files were never in the repository.** A `data/` line in `.gitignore`, meant
+    for the CIFAR-10 download, also matched `spotsentry/planner/data/`. Everything worked locally,
+    but a fresh clone on EC2 would have had no price table, no advisor snapshot and no speed table.
+    The rule is now `/data/`, and a test checks these files are not ignored.
+
+## The team's AWS account
+
+Checked on 2026-11-07, read-only, before anything was deployed.
+
+- The account is on the new **Free plan** and sits in an AWS-managed organization (account name
+  "Just Ship It"). Organization rules (service control policies) apply on top of IAM, so
+  `AdministratorAccess` does not override them.
+- **Only `ap-southeast-2` (Sydney) is allowed.** EC2, S3, CloudFormation and Auto Scaling calls were
+  denied in `ap-south-1`, `us-east-1`, `us-east-2`, `us-west-2` and `eu-west-1`, and allowed in Sydney.
+  `aws login` named Sydney as the account's region. The project's AWS defaults were moved there from
+  Mumbai, and Sydney prices and advisor data were added to the planner's tables.
+- **AWS FIS is denied on the Free plan,** even in Sydney, so "Initiate interruption" needs the Paid
+  plan.
 
 ## Decisions and departures from the spec
 

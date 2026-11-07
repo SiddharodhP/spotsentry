@@ -78,6 +78,32 @@ def test_update_job_file_changes_only_the_bucket(tmp_path):
     assert data["store"] == {"type": "s3", "bucket": "new-bucket", "prefix": "jobs/"}
 
 
+def test_update_job_file_sets_region(tmp_path):
+    job = tmp_path / "job.yaml"
+    job.write_text("store:\n  type: s3\n  bucket: old\n  region: ap-south-1\n", "utf-8")
+    deploy.update_job_file("b", job, region="ap-southeast-2")
+    assert yaml.safe_load(job.read_text("utf-8"))["store"]["region"] == "ap-southeast-2"
+
+
+def test_deploy_region_matches_job_file():
+    from spotsentry.config import load_config
+
+    config = load_config(ROOT / "jobs" / "cifar_aws.yaml", environ={})
+    assert deploy.parse_args(["--repo-url", "x"]).region == config.store.region
+
+
+def test_planner_data_files_are_tracked_by_git():
+    # A broad "data/" ignore rule once kept these out of the repository, so EC2 never had them.
+    import subprocess
+
+    data = ROOT / "spotsentry" / "planner" / "data"
+    for name in ("on_demand_prices.yaml", "relative_speed.yaml", "spot-advisor-snapshot.json"):
+        ignored = subprocess.run(
+            ["git", "check-ignore", "-q", str(data / name)], cwd=ROOT, check=False
+        ).returncode == 0
+        assert not ignored, f"{name} is git-ignored"
+
+
 def test_plan_text_mentions_cost_and_resources():
     args = deploy.parse_args(["--repo-url", "https://example.invalid/r.git"])
     assert args.yes is False

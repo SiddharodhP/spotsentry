@@ -8,7 +8,7 @@ __pycache__/
 *.egg-info/
 build/
 dist/
-data/
+/data/
 experiments/tmp/
 spotsentry/planner/history.jsonl
 infra/.deploy-state.json

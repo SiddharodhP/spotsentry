@@ -110,7 +110,7 @@ def build_parser() -> argparse.ArgumentParser:
     plan.add_argument("--job", required=True)
     plan.add_argument("--candidates", default="c5.large,m5.large,c6i.large",
                       help="comma-separated instance types")
-    plan.add_argument("--regions", default="ap-south-1", help="comma-separated regions")
+    plan.add_argument("--regions", default="ap-southeast-2", help="comma-separated regions")
     plan.add_argument("--warmup-steps", type=int, default=10)
     plan.add_argument("--profile-steps", type=int, default=50)
     plan.add_argument("--mtbi-hours", type=float, default=None,

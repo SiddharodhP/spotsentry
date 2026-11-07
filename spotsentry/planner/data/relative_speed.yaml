@@ -1,0 +1,11 @@
+# Speed of each instance type relative to the machine that ran the profile.
+#
+# PLACEHOLDER VALUES: these are not measurements. To fill them in, run
+#   spotsentry profile --job jobs/cifar_aws.yaml
+# once on each candidate type and divide the reference machine's mean_step_sec by that type's.
+placeholder: true
+relative_speed:
+  c5.large: 1.0
+  m5.large: 1.0
+  c6i.large: 1.0
+  t3.medium: 1.0

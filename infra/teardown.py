@@ -43,7 +43,7 @@ def main(argv: list[str] | None = None) -> int:
     state = load_state()
     parser = argparse.ArgumentParser(description=__doc__.splitlines()[0])
     parser.add_argument("--stack-name", default=state.get("stack", "spotsentry"))
-    parser.add_argument("--region", default=state.get("region", "ap-south-1"))
+    parser.add_argument("--region", default=state.get("region", "ap-southeast-2"))
     parser.add_argument("--keep-data", action="store_true",
                         help="keep the bucket's contents. The stack delete then fails on the "
                              "bucket, leaving the bucket in place.")

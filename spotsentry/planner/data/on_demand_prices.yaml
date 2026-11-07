@@ -1,0 +1,21 @@
+# On-demand USD per hour, Linux, shared tenancy.
+# Source: AWS public price list, publication date 2026-11-05. Retrieved 2026-11-06.
+retrieved: "2026-11-06"
+prices:
+  ap-south-1:
+    c5.large: 0.085
+    m5.large: 0.101
+    c6i.large: 0.085
+    t3.medium: 0.0448
+  us-east-1:
+    c5.large: 0.085
+    m5.large: 0.096
+    c6i.large: 0.085
+    t3.medium: 0.0416
+  # Added 2026-11-07 from AWS's public on-demand price file for Asia Pacific (Sydney), published
+  # 2026-11-07. The team's account only allows ap-southeast-2.
+  ap-southeast-2:
+    c5.large: 0.111
+    m5.large: 0.120
+    c6i.large: 0.111
+    t3.medium: 0.0528

@@ -6,6 +6,9 @@ been deployed yet**, so treat the first deploy as a test and watch it.
 
 ## Before you start
 
+0. **Region: Sydney (`ap-southeast-2`).** The team's account only allows that region (see
+   `docs/NOTES.md`), so it is the default for `deploy.py`, `teardown.py`, `spotsentry plan` and
+   `jobs/cifar_aws.yaml`. For an account without that limit, pass `--region` to `deploy.py`.
 1. **Use the Paid plan.** Initiating a spot interruption uses AWS Fault Injection Service, which the
    Free plan does not include. In the console, check Billing > Account plan. Credits still apply.
 2. **Set a budget.** Billing > Budgets > Create budget > Monthly cost budget, $5, with an email alert.
@@ -104,7 +107,7 @@ These replace placeholders in the results. Do them before tearing down.
 2. **The online planner**, with your AWS credentials:
 
    ```bash
-   spotsentry plan --job jobs/cifar_aws.yaml --candidates c5.large,m5.large,c6i.large --regions ap-south-1
+   spotsentry plan --job jobs/cifar_aws.yaml --candidates c5.large,m5.large,c6i.large --regions ap-southeast-2
    ```
 
 3. **Record the screen** during a complete successful run. That is your backup for the live review.

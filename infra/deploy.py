@@ -30,7 +30,7 @@ def parse_args(argv: list[str] | None = None) -> argparse.Namespace:
     parser.add_argument("--repo-url", required=True, help="Git URL instances clone from")
     parser.add_argument("--branch", default="main")
     parser.add_argument("--job", default="jobs/cifar_aws.yaml")
-    parser.add_argument("--region", default="ap-south-1")
+    parser.add_argument("--region", default="ap-southeast-2")
     parser.add_argument("--stack-name", default="spotsentry")
     parser.add_argument("--instance-types", default="c5.large,m5.large,c6i.large",
                         help="exactly three types")
@@ -102,12 +102,13 @@ Set an AWS Budget (for example $5) first, if you have not already.
 """
 
 
-def update_job_file(bucket: str, path: Path = JOB_FILE) -> None:
-    """Write the bucket name into the AWS job file."""
+def update_job_file(bucket: str, path: Path = JOB_FILE, region: str | None = None) -> None:
+    """Write the bucket name, and the region if given, into the AWS job file."""
     text = path.read_text(encoding="utf-8")
-    path.write_text(
-        re.sub(r"(?m)^(\s*bucket:\s*).*$", rf"\g<1>{bucket}", text, count=1), encoding="utf-8"
-    )
+    text = re.sub(r"(?m)^(\s*bucket:\s*).*$", rf"\g<1>{bucket}", text, count=1)
+    if region:
+        text = re.sub(r"(?m)^(\s*region:\s*).*$", rf"\g<1>{region}", text, count=1)
+    path.write_text(text, encoding="utf-8")
 
 
 def main(argv: list[str] | None = None) -> int:
@@ -175,12 +176,12 @@ def main(argv: list[str] | None = None) -> int:
     print("Created:")
     for key, value in outputs.items():
         print(f"  {key}: {value}")
-    update_job_file(outputs["BucketName"])
+    update_job_file(outputs["BucketName"], region=args.region)
     STATE_FILE.write_text(
         json.dumps({"stack": args.stack_name, "region": args.region, **outputs}, indent=1),
         encoding="utf-8",
     )
-    print(f"Updated {JOB_FILE.name} with the bucket name. Commit and push it, or instances")
+    print(f"Updated {JOB_FILE.name} with the bucket and region. Commit and push it, or instances")
     print("will use the old name (the SPOTSENTRY_STORE__BUCKET variable covers them meanwhile).")
     print("\nNext: python scripts/demo_aws.py")
     print("When finished: python infra/teardown.py")
