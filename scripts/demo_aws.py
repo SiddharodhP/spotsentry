@@ -28,7 +28,8 @@ To interrupt from the console (what the live demo shows):
   1. EC2 console > Spot Requests
   2. Select the request for the running instance
   3. Actions > Initiate interruption
-This uses AWS Fault Injection Service, which needs an account on the Paid plan.
+This uses AWS Fault Injection Service, which needs an account on the Paid plan. If the console
+has no FIS pages (the "AWS (new)" experience), run: python scripts/demo_aws.py --interrupt
 """
 
 

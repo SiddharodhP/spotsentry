@@ -96,8 +96,9 @@ launch, and the job scales back to zero when it finishes.
 
 Wait until a few checkpoints appear in the dashboard, then do either of these:
 
-- **From the console, for the live demo:** EC2 > Spot Requests > select the request > Actions >
-  Initiate interruption.
+- **From the console:** EC2 > Spot Requests > select the request > Actions > Initiate interruption.
+  On the team's account ("AWS (new)" console experience) the FIS console is not available, so use
+  the command line below. The FIS API itself works.
 - **From the command line:**
 
   ```bash
@@ -137,7 +138,8 @@ python infra/teardown.py
 It sets the group to zero, asks before emptying the bucket, deletes the stack and prints a checklist.
 Then check by eye: the EC2 console's instance list should show nothing running, and the
 CloudFormation console should show no `spotsentry` stack. Anything created by `demo_aws.py --interrupt`
-in AWS FIS (experiment templates) is free, and you can delete it from the FIS console.
+in AWS FIS (experiment templates) is free. On an account without the FIS console, list them with
+`aws fis list-experiment-templates` and remove each with `aws fis delete-experiment-template --id ID`.
 
 ## If something goes wrong
 
@@ -146,7 +148,7 @@ in AWS FIS (experiment templates) is free, and you can delete it from the FIS co
 | Stack fails creating the bucket | The name is taken. Pass `--bucket some-other-name` |
 | Spot request stays pending | No capacity at this price. Try other `--instance-types` |
 | Instance boots but no events | Read `/var/log/spotsentry.log`. Usually the repository URL or a private repository |
-| "Initiate interruption" missing or fails | The account is on the Free plan, or the region does not support it |
+| "Initiate interruption" missing or fails | The account is on the Free plan, or uses the "AWS (new)" console without FIS pages. Use `python scripts/demo_aws.py --interrupt` |
 | Costs are climbing | Run `python infra/teardown.py` right away |
 
 ## Booting faster (optional)

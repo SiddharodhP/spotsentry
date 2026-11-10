@@ -37,7 +37,6 @@ The instance IDs match across all three, and the times match the taskbar clock.
    - EC2 > Instances. Filter: `tag:spotsentry = true`. Gear icon: turn on the **Instance lifecycle**
      and **Availability zone** columns.
    - EC2 > Spot Requests.
-   - AWS FIS > Experiments.
    - S3 > `spotsentry-662182610728-ap-southeast-2` > `jobs/` > `cifar-aws/` > `checkpoints/`
      (it fills up during the run).
 
@@ -80,18 +79,19 @@ Open two terminals in `D:\CCel` with the virtual environment active.
 
 6. **Wait about 3 minutes**, so several checkpoints exist. You can pause OBS here.
 
-7. **Send the real interruption.** EC2 > Spot Requests > select the active request > **Actions >
-   Initiate interruption**. If it asks for an IAM role, choose the one starting
-   `spotsentry-FisRole-`. Confirm.
-
-   If the console option is missing or fails, run this in a third terminal instead. It does the
-   same thing through AWS FIS:
+7. **Send the real interruption** from a third terminal. It creates an AWS FIS experiment that sends
+   the instance a real spot interruption:
 
    ```bash
    python scripts/demo_aws.py --interrupt
    ```
 
    Say: "AWS has just told this machine it will be taken away in two minutes."
+
+   Use the terminal rather than the console. On this account ("AWS (new)" experience) the FIS API
+   works, but the FIS console pages are not available, and the EC2 "Initiate interruption" button
+   also goes through FIS. Activating the account's advanced features would bring the console pages
+   back, but it is not needed.
 
 8. **Watch the notice and the save**, within a few seconds. Point at each in the dashboard timeline
    and the terminal:
@@ -100,7 +100,12 @@ Open two terminals in `D:\CCel` with the virtual environment active.
    - **Emergency saved**: saved in a fraction of a second, well inside the deadline
    - the worker exits with code 75
 
-   In AWS FIS > Experiments, the experiment shows **running** and later **completed**.
+   To show the FIS experiment itself, run this in the third terminal. It shows **running**, and
+   later **completed**, with its start time:
+
+   ```bash
+   aws fis list-experiments --region ap-southeast-2
+   ```
 
 9. **Watch the replacement**, about 80 seconds. On EC2 > Instances, refresh: the old instance goes
    to **Shutting-down / Terminated**, and a new instance appears. In the dashboard: **Restored** at
