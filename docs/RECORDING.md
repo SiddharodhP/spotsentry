@@ -40,7 +40,8 @@ The instance IDs match across all three, and the times match the taskbar clock.
    - S3 > `spotsentry-662182610728-ap-southeast-2` > `jobs/` > `cifar-aws/` > `checkpoints/`
      (it fills up during the run).
 
-4. **Check nothing is running:**
+4. **Check nothing is running**, in a terminal set up as in the README's
+   [Every new terminal](../README.md#every-new-terminal) (project folder, `(.venv)` in the prompt):
 
    ```bash
    python scripts/demo_aws.py --no-follow
@@ -50,7 +51,25 @@ The instance IDs match across all three, and the times match the taskbar clock.
 
 ## Recording
 
-Open two terminals in `D:\CCel` with the virtual environment active.
+Open **three terminals**, and in **each one** do this before anything else (details and error
+messages in the README's [Every new terminal](../README.md#every-new-terminal)):
+
+```bash
+cd D:\CCel
+```
+
+```bash
+.venv\Scripts\Activate.ps1
+```
+
+Every prompt must start with `(.venv) PS D:\CCel>`. Then check each terminal prints `ready`:
+
+```bash
+python -c "import boto3, spotsentry; print('ready')"
+```
+
+Terminal 1 runs the dashboard, terminal 2 the event stream, terminal 3 the interruption and the
+FIS check. Doing this before you press record avoids an error appearing on the video.
 
 1. **Start the dashboard** in terminal 1, and put the browser tab on the right half of the screen:
 

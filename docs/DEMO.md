@@ -8,18 +8,39 @@
 
 ## 30 minutes before
 
-Deploy, using the steps in [AWS_STEPS.md](AWS_STEPS.md), so that the instance is already training and
-has a few checkpoints:
+Open three terminals. In each one, go to the project folder and activate the environment, so the
+prompt reads `(.venv) PS D:\CCel>` (see the README's
+[Every new terminal](../README.md#every-new-terminal)):
 
 ```bash
-python infra/deploy.py --repo-url https://github.com/YOUR-NAME/spotsentry.git --yes
+cd D:\CCel
 ```
+
+```bash
+.venv\Scripts\Activate.ps1
+```
+
+Start a run, so the instance is already training and has a few checkpoints. The stack is already
+deployed, so in terminal 1:
+
+```bash
+python scripts/demo_aws.py --start
+```
+
+If the stack was torn down, deploy it first, following [AWS_STEPS.md](AWS_STEPS.md):
+
+```bash
+python infra/deploy.py --repo-url https://github.com/SiddharodhP/spotsentry.git --yes
+```
+
+In terminal 2, the dashboard:
 
 ```bash
 spotsentry dashboard --job jobs/cifar_aws.yaml
 ```
 
-Have these open: the dashboard, the EC2 console on Spot Requests, and a terminal in the project.
+Have these open: the dashboard, the EC2 console on Instances (Sydney), and terminal 3 ready for
+`python scripts/demo_aws.py --interrupt`.
 
 ## The script
 

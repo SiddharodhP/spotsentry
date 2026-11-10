@@ -6,6 +6,10 @@ Free plan, and ran a full CIFAR-10 job (see `docs/NOTES.md`).
 
 ## Before you start
 
+Run every command below from the project folder (`D:\CCel` on the team laptop) with the virtual
+environment active: the prompt must start with `(.venv)`. Do this in every new terminal; see the
+README's [Every new terminal](../README.md#every-new-terminal).
+
 0. **Region: Sydney (`ap-southeast-2`).** The team's account only allows that region (see
    `docs/NOTES.md`), so it is the default for `deploy.py`, `teardown.py`, `spotsentry plan` and
    `jobs/cifar_aws.yaml`. For an account without that limit, pass `--region` to `deploy.py`.
@@ -53,13 +57,13 @@ Free plan, and ran a full CIFAR-10 job (see `docs/NOTES.md`).
 1. See the plan and estimated cost. This creates nothing:
 
    ```bash
-   python infra/deploy.py --repo-url https://github.com/YOUR-NAME/spotsentry.git
+   python infra/deploy.py --repo-url https://github.com/SiddharodhP/spotsentry.git
    ```
 
 2. Deploy:
 
    ```bash
-   python infra/deploy.py --repo-url https://github.com/YOUR-NAME/spotsentry.git --yes
+   python infra/deploy.py --repo-url https://github.com/SiddharodhP/spotsentry.git --yes
    ```
 
 3. Watch it. The first boot takes a few minutes, because it installs Python and PyTorch and downloads

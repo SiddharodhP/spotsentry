@@ -38,6 +38,9 @@ terminal at the project root and work on Windows, macOS and Linux.
    pip install -e . --no-deps
    ```
 
+   Then do the steps in [Every new terminal](#every-new-terminal) below. You will do those in
+   every terminal you open from now on.
+
 2. Check it works (about 1 minute, no Docker or AWS needed):
 
    ```bash
@@ -72,6 +75,43 @@ terminal at the project root and work on Windows, macOS and Linux.
 
    and open http://localhost:8501. The dashboard reads from MinIO, so use the Docker backend for the
    demo. The local-process backend keeps its data in a temporary folder.
+
+## Every new terminal
+
+Every command in this project, and in the guides under `docs/`, runs from the project folder with
+the virtual environment active. A new terminal starts with neither, so do these three steps each
+time you open one, including the extra terminals for the dashboard and the AWS demo.
+
+1. **Go to the project folder**, the one holding this README. On the team laptop that is `D:\CCel`:
+
+   ```bash
+   cd D:\CCel
+   ```
+
+2. **Activate the virtual environment.** In PowerShell:
+
+   ```bash
+   .venv\Scripts\Activate.ps1
+   ```
+
+   In Command Prompt, use `.venv\Scripts\activate.bat`. On macOS or Linux, `source .venv/bin/activate`.
+
+3. **Check.** The prompt now starts with `(.venv)`, for example `(.venv) PS D:\CCel>`. This
+   should print `ready`:
+
+   ```bash
+   python -c "import boto3, spotsentry; print('ready')"
+   ```
+
+The `aws` command is installed for the whole computer, so it works either way. `python`,
+`pytest` and `spotsentry` need the environment.
+
+| What you see | Cause | Fix |
+|---|---|---|
+| `ModuleNotFoundError: No module named 'boto3'` (or `spotsentry`, `torch`) | Environment not active | Step 2 |
+| `spotsentry : The term 'spotsentry' is not recognized` | Environment not active | Step 2 |
+| `can't open file '...\scripts\demo_aws.py'` | Wrong folder | Step 1 |
+| `running scripts is disabled on this system` | PowerShell blocks activation scripts | Run `Set-ExecutionPolicy -Scope CurrentUser RemoteSigned` once, then step 2 |
 
 ## Using it in your own job
 
